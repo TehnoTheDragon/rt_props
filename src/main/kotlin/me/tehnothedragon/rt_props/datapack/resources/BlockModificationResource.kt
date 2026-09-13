@@ -153,12 +153,12 @@ class BlockModificationResource : PreparableReloadListener {
 
         for (entry in pendingBlocks) {
             if (entry.target is Target.Block) {
-                val block = BuiltInRegistries.BLOCK
-                    .get(entry.target.id)
-
-                // I'm not sure, how is it not an optional; So just in case, I want to leave it here.
-                if (block != null) {
+                if (BuiltInRegistries.BLOCK.containsKey(entry.target.id)) {
+                    val block = BuiltInRegistries.BLOCK
+                        .get(entry.target.id)
                     modifications[block] = entry.modification
+                } else {
+                    RtProps.LOGGER.error("block ${entry.target.id} does not exist")
                 }
             }
         }
