@@ -155,6 +155,8 @@ class BlockModificationResource : PreparableReloadListener {
             if (entry.target is Target.Block) {
                 val block = BuiltInRegistries.BLOCK
                     .get(entry.target.id)
+
+                // I'm not sure, how is it not an optional; So just in case, I want to leave it here.
                 if (block != null) {
                     modifications[block] = entry.modification
                 }
