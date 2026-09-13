@@ -216,22 +216,24 @@ class BlockModificationResource : PreparableReloadListener {
     )
 
     private fun getTarget(resourceLocation: ResourceLocation): Target? {
+        val path = resourceLocation.path
+
         var isTag: Boolean
         var prefix: String
 
         when {
-            resourceLocation.path.startsWith("$RESOURCE_ID/tags/") -> {
+            path.startsWith("$RESOURCE_ID/tags/") -> {
                 isTag = true
                 prefix = "$RESOURCE_ID/tags/"
             }
-            resourceLocation.path.startsWith("$RESOURCE_ID/blocks/") -> {
+            path.startsWith("$RESOURCE_ID/blocks/") -> {
                 isTag = false
                 prefix = "$RESOURCE_ID/blocks/"
             }
             else -> return null
         }
 
-        val relativePath = resourceLocation.path.removePrefix(prefix)
+        val relativePath = path.removePrefix(prefix)
 
         if (!relativePath.endsWith(".json")) {
             return null
@@ -244,9 +246,10 @@ class BlockModificationResource : PreparableReloadListener {
             return null
         }
 
-        val namespace = blockId.take(separator)
-        val path = blockId.substring(separator + 1)
-        val targetId = ResourceLocation.fromNamespaceAndPath(namespace, path)
+        val targetId = ResourceLocation.fromNamespaceAndPath(
+            blockId.take(separator),
+            blockId.substring(separator + 1)
+        )
 
         return when (isTag) {
             true -> Target.Tag(targetId)
