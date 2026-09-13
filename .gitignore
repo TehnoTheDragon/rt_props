@@ -1,3 +1,7 @@
+# IDEs settings
+/.idea/
+/.vscode/
+
 # Project exclude paths
 /.gradle/
 /build/
