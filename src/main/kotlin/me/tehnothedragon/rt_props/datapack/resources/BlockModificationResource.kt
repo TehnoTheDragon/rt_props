@@ -216,9 +216,6 @@ class BlockModificationResource : PreparableReloadListener {
     )
 
     private fun getTarget(resourceLocation: ResourceLocation): Target? {
-        RtProps.LOGGER.debug("::getBlockIds()")
-        RtProps.LOGGER.debug("  $resourceLocation")
-
         var isTag: Boolean
         var prefix: String
 
@@ -235,7 +232,6 @@ class BlockModificationResource : PreparableReloadListener {
         }
 
         val relativePath = resourceLocation.path.removePrefix(prefix)
-        RtProps.LOGGER.debug("  $relativePath")
 
         if (!relativePath.endsWith(".json")) {
             return null
@@ -243,7 +239,6 @@ class BlockModificationResource : PreparableReloadListener {
 
         val blockId = relativePath.removeSuffix(".json")
         val separator = blockId.indexOf("/")
-        RtProps.LOGGER.debug("  $blockId")
 
         if (separator == -1) {
             return null
@@ -252,8 +247,6 @@ class BlockModificationResource : PreparableReloadListener {
         val namespace = blockId.take(separator)
         val path = blockId.substring(separator + 1)
         val targetId = ResourceLocation.fromNamespaceAndPath(namespace, path)
-
-        RtProps.LOGGER.debug("  $targetId")
 
         return when (isTag) {
             true -> Target.Tag(targetId)
